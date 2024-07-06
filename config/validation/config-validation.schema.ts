@@ -7,6 +7,8 @@ const validationSchema = Joi.object({
   DB_HOST: Joi.string().required(),
   DB_NAME: Joi.string().required(),
   DB_PORT: Joi.string().required(),
+  GOOGLE_PLACES_API_KEY: Joi.string().required(),
+  GOOGLE_PLACES_API_URL: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
 });
 

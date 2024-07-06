@@ -8,5 +8,9 @@ export default () => ({
     database: process.env.DB_NAME,
     synchronize: process.env.NODE_ENV === 'dev',
   },
+  googlePlaces: {
+    apiKey: process.env.GOOGLE_PLACES_API_KEY,
+    apiUrl: process.env.GOOGLE_PLACES_API_URL,
+  },
   jwtSecret: process.env.JWT_SECRET,
 });
