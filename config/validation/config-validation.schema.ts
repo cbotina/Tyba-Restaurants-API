@@ -10,6 +10,7 @@ const validationSchema = Joi.object({
   GOOGLE_PLACES_API_KEY: Joi.string().required(),
   GOOGLE_PLACES_API_URL: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
+  MONGO_DB_URI: Joi.string().required(),
 });
 
 export default validationSchema;

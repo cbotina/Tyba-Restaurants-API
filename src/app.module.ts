@@ -10,6 +10,9 @@ import { dbConfig } from 'config/database/database.config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RestaurantsModule } from './restaurants/restaurants.module';
+import { HistoryModule } from './history/history.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { mongooseConfig } from 'config/database/mongoose.config';
 
 @Module({
   imports: [
@@ -24,9 +27,15 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
       useFactory: dbConfig,
       inject: [ConfigService],
     }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: mongooseConfig,
+      inject: [ConfigService],
+    }),
     AuthModule,
     UsersModule,
     RestaurantsModule,
+    HistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

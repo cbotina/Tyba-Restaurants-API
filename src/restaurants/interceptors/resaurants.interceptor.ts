@@ -15,16 +15,20 @@ export class RestaurantsInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Observable<IRestaurant[]> {
     return next.handle().pipe(
-      map((result: any) =>
-        result.places.map(
-          (doc: any): IRestaurant => ({
-            id: doc.id,
-            name: doc.displayName.text,
-            address: doc.formattedAddress,
-            location: doc.location as Coordinates,
-          }),
-        ),
-      ),
+      map((result: any) => {
+        if (result.IsNotEmpty) {
+          return result.places.map(
+            (doc: any): IRestaurant => ({
+              id: doc.id,
+              name: doc.displayName.text,
+              address: doc.formattedAddress,
+              location: doc.location as Coordinates,
+            }),
+          );
+        } else {
+          return [];
+        }
+      }),
     );
   }
 }

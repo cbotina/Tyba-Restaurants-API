@@ -13,4 +13,7 @@ export default () => ({
     apiUrl: process.env.GOOGLE_PLACES_API_URL,
   },
   jwtSecret: process.env.JWT_SECRET,
+  mongoose: {
+    uri: process.env.MONGO_DB_URI,
+  },
 });
