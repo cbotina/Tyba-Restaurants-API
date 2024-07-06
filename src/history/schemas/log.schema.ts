@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Exclude, Transform } from 'class-transformer';
+import { Exclude } from 'class-transformer';
 import { Document } from 'mongoose';
-import { Coordinates } from 'src/restaurants/search-options.dto';
 
 export type LogDocument = Log & Document;
 
