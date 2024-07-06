@@ -7,6 +7,8 @@ import configuration from 'config/conriguration';
 import configValidation from 'config/validation/config-validation.schema';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from 'config/database/database.config';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { dbConfig } from 'config/database/database.config';
       useFactory: dbConfig,
       inject: [ConfigService],
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
