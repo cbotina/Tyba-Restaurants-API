@@ -22,12 +22,14 @@ export class HistoryLogInterceptor implements NestInterceptor {
     const origin =
       request.headers.origin || request.headers.referer || 'unknown origin';
     const body = request.body;
+    const userId = request.user ? request.user.id : 'anonymous';
 
     const log: Log = {
       method,
       url,
       origin,
       body,
+      userId,
       timestamp: new Date(),
     };
 
