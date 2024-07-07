@@ -1,13 +1,28 @@
 # Tyba Restaurants API
 
-Este repositorio contiene una API REST desarrollada para la prueba técnica de ingreso al equipo de backend de Tyba. La API proporciona funcionalidades de registro de usuarios, autenticación, consulta de restaurantes cercanos, historial de transacciones y gestión de usuarios.
+Este repositorio contiene una API REST desarrollada para la prueba técnica de ingreso al equipo de backend de Tyba. La API proporciona funcionalidades de registro de usuarios e inicio de sesión.
+
+Para usuarios autenticados, se permite consultar los restaurantes cercanos a una ubicación en específico (Definida por coordenadas y un radio de búsqueda), historial de transacciones realizadas (En este contexto se consideró 'transacciones' a las peticiones históricas realizadas al endpoint de restaurantes) y gestión de usuarios.
+
+Se manejó un RBAC (Control de acceso basado en Roles) para la autorización en los endpoints a lo largo de la aplicación. El rol de cada usuario puede ser `customer` o `admin`. Al ejecutar el proyecto, se crea automáticamente un usuario `admin` por defecto, cuyas credenciales se especifican en el archivo `.env` proporcionado.
+
+En ese contexto, se implementaron las siguientes reglas
+
+- El usuario `admin` puede acceder a todos los endpoints y recursos, consultar la lista completa de usuarios, consultar transacciones historicas de todos los usuarios y de transacciones historicas de un usuario en particular
+
+- El usuario `customer` puede acceder al endpoint de búsqueda de restaurantes
+
+- El usuario `customer` puede consultar sus busquedas historicas
+
+- El usuario `customer` **no** puede consultar busquedas historicas de otros usuarios
 
 ## Tecnologías Utilizadas
 
 - NodeJS
 - NestJS
 - Base de Datos: PostgreSQL, MongoDB
-- Docker y Docker Compose para entorno de desarrollo
+- Autenticación: Json Web Token (JWT)
+- Docker y docker-compose para entorno de desarrollo
 
 ## Requisitos
 
@@ -31,7 +46,6 @@ Este repositorio contiene una API REST desarrollada para la prueba técnica de i
 3. Crear un archivo '.env.development.local' (desarrollo) o '.env' (producción) e incluir las siguientes variables
 
    ```bash
-
    PORT=
    DB_USERNAME=
    DB_PASSWORD=
@@ -46,8 +60,6 @@ Este repositorio contiene una API REST desarrollada para la prueba técnica de i
    ADMIN_PASSWORD=
    ADMIN_FIRST_NAME=
    ADMIN_LAST_NAME=
-
-   `
    ```
 
    > Nota: `GOOGLE_PLACES_API_URL` puede variar dependiendo de la version. Para este proyecto se utilizó la url https://places.googleapis.com/v1/places
@@ -56,26 +68,9 @@ Este repositorio contiene una API REST desarrollada para la prueba técnica de i
 
 ### Autenticación
 
-#### POST/auth/login
-
-- Body:
-
-```json
-{
-  "email": "email@example.com",
-  "password": "yourPassword123!"
-}
-```
-
-- Response (200)
-
-```json
-{
-  "token": "your_token"
-}
-```
-
 #### POST /auth/register
+
+Endpoint público. Utilizar para registrar usuarios. Por defecto estos usuarios tendrán el rol de `customer`.
 
 - Body:
 
@@ -100,9 +95,32 @@ Este repositorio contiene una API REST desarrollada para la prueba técnica de i
 }
 ```
 
+#### POST/auth/login
+
+Utilizar este enpoint para inicio de sesión de usuario. Se retornará un JWT que se utilizará para autenticación en los siguientes endpoints
+
+- Body:
+
+```json
+{
+  "email": "email@example.com",
+  "password": "yourPassword123!"
+}
+```
+
+- Response (200)
+
+```json
+{
+  "token": "your_token"
+}
+```
+
 ### Restaurantes
 
 #### GET /restaurants
+
+Endpoint para consultar los restaurantes cercanos a una ubicación definida por coordenadas y un radio de búsqueda. Los resultados de la API de Google son mapeados a la clase `IRestaurant`
 
 - Body:
 
@@ -155,6 +173,8 @@ Este repositorio contiene una API REST desarrollada para la prueba técnica de i
 
 #### GET /users/
 
+Endpoint disponible únicamente para usuarios `admin`. Retorna una lista de todos los usuarios registrados.
+
 ```json
 [
   {
@@ -178,6 +198,8 @@ Este repositorio contiene una API REST desarrollada para la prueba técnica de i
 ### Historial de transacciones
 
 #### GET /logs/
+
+Endpoint disponible únicamente para usuarios `admin`. Retorna una lista de todas las transacciones realizadas históricamente, incluyendo detalles como el método, url, origen, body y fecha de la transacción.
 
 ```json
 [
@@ -203,6 +225,8 @@ Este repositorio contiene una API REST desarrollada para la prueba técnica de i
 ```
 
 #### GET /users/:userId/logs/
+
+Endpoint para consultar las transacciones históricas de un usuario, donde [userId] es el id del usuario. Usuarios con rol de `customer` pueden consultar sus propio historial de transacciones, pero no pueden consultar el historial de transacciones de otros usuarios. Nótese que en este endpoint se omiten algunas propiedades de cada transacción.
 
 ```json
 [
