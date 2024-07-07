@@ -14,6 +14,8 @@ En ese contexto, se implementaron las siguientes reglas
 
 - El usuario `customer` **no** puede consultar busquedas historicas de otros usuarios
 
+Adicionalmente, se utilizo docker-compose para empaquetar el proyecto en modo de desarrollo y producción
+
 ## Tecnologías Utilizadas
 
 - NodeJS
@@ -34,14 +36,16 @@ En ese contexto, se implementaron las siguientes reglas
    git clone https://github.com/cbotina/Tyba-Restaurants-API
    ```
 
-2. Navegar a la raiz del proyecto y ejecutar el comando (Para producción reemplazar docker-compose.yml por docker-compose.prod.yml)
+2. Navegar a la raiz del proyecto y ejecutar el siguiente comando
 
    ```bash
    docker-compose -f docker-compose.yml up --build
 
    ```
 
-3. Crear un archivo '.env.development.local' (desarrollo) o '.env' (producción) e incluir las siguientes variables
+   (Para producción reemplazar docker-compose.yml por docker-compose.prod.yml)
+
+3. Crear un archivo '.env.development.local' e incluir las siguientes variables
 
    ```bash
    PORT=
@@ -59,6 +63,8 @@ En ese contexto, se implementaron las siguientes reglas
    ADMIN_FIRST_NAME=
    ADMIN_LAST_NAME=
    ```
+
+   (Para producción el archivo se debe llamar '.env')
 
    > Nota: `GOOGLE_PLACES_API_URL` puede variar dependiendo de la version. Para este proyecto se utilizó la url https://places.googleapis.com/v1/places
 
@@ -244,4 +250,12 @@ Endpoint para consultar las transacciones históricas de un usuario, donde [user
 
   // Otras busquedas realizadas por un usuario en particular
 ]
+```
+
+## Pruebas automatizadas
+
+Para correr las pruebas, ejecutar el comando
+
+```bash
+npm run test
 ```
