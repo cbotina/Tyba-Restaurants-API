@@ -37,14 +37,6 @@ export class HistoryLogInterceptor implements NestInterceptor {
       console.error('Error saving log to MongoDB', error);
     });
 
-    console.log(
-      `INCOMING REQUEST:\n\tMethod - ${method}\n\tURL - ${url}\n\tOrigin - ${origin}\n\tBody - ${body}`,
-    );
-
-    return next.handle().pipe(
-      tap(() => {
-        console.log(`\tHandled in ${Date.now() - now}ms`);
-      }),
-    );
+    return next.handle();
   }
 }

@@ -1,10 +1,10 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../../src/users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Public } from '../../src/common/decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {

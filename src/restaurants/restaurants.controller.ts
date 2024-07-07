@@ -2,8 +2,8 @@ import { Body, Controller, Get, UseInterceptors } from '@nestjs/common';
 import { RestaurantsService } from './restaurants.service';
 import { SearchOptionsDto } from './search-options.dto';
 import { RestaurantsInterceptor } from './interceptors/resaurants.interceptor';
-import { HistoryLogInterceptor } from 'src/history/interceptors/logging.interceptor';
-import { HistoryService } from 'src/history/history.service';
+import { HistoryLogInterceptor } from '../../src/history/interceptors/logging.interceptor';
+import { HistoryService } from '../../src/history/history.service';
 
 @Controller('restaurants')
 export class RestaurantsController {

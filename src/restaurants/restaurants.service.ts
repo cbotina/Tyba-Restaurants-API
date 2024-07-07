@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { googlePlacesConfig } from 'config/google-places-api/google-places-api.config';
+import { googlePlacesConfig } from '../../config/google-places-api/google-places-api.config';
 import { catchError, map } from 'rxjs';
 import { SearchOptionsDto } from './search-options.dto';
 
