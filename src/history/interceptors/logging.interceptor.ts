@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import { HistoryService } from '../history.service';
 import { Log } from '../schemas/log.schema';
 
+// Interceptor para capturar la informacion del request y
+// almacenarlo en la base de datos de historial
 @Injectable()
 export class HistoryLogInterceptor implements NestInterceptor {
   constructor(private readonly historyService: HistoryService) {}

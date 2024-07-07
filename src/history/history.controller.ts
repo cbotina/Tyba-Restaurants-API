@@ -14,6 +14,8 @@ export class HistoryController {
     return this.historyService.getAllLogs();
   }
 
+  // UserGuard para verificar que un usuario pueda mirar su historial
+  // y no el historial de otros usuarios
   @UseGuards(UserGuard)
   @Role(Roles.CUSTOMER)
   @Get('users/:userId/logs')

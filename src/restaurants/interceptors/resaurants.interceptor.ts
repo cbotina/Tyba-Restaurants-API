@@ -6,8 +6,11 @@ import {
 } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
 import { IRestaurant } from '../interfaces/restaurant.interface';
-import { Coordinates } from '../search-options.dto';
+import { Coordinates } from '../dto/search-options.dto';
 
+/**
+ * Interceptor para mapear la response de Google Places a una lista de IRestaurant
+ */
 @Injectable()
 export class RestaurantsInterceptor implements NestInterceptor {
   intercept(
@@ -26,6 +29,7 @@ export class RestaurantsInterceptor implements NestInterceptor {
             }),
           );
         } else {
+          // Retornar lista vacia si la API retorna {} (Sin propiedad "places")
           return [];
         }
       }),

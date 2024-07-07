@@ -14,11 +14,20 @@ import { HistoryModule } from './history/history.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { mongooseConfig } from 'config/database/mongoose.config';
 
+// Para cada modulo que requiera informacion sensible se
+// hace uso de ConfigService para acceder a las variables de entorno
+// y obtener la informacion del archivo .env correspondiente
+
+// En los modulos que utilicen factories, se inyecta ConfigService
+// para acceder a sus variables
 @Module({
   imports: [
     ConfigModule.forRoot({
+      // Se carga un archivo .env distinto dependiendo del
+      // entorno seleccionado
       envFilePath: environments[process.env.NODE_ENV],
       load: [configuration],
+      // Validacion del archivo .env
       validationSchema: configValidation,
       isGlobal: true,
     }),

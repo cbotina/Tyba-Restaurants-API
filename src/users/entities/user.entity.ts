@@ -20,6 +20,8 @@ export class User {
   @Column({ unique: true })
   email: string;
 
+  // Excluyo a la contraseña para no
+  // mostrar informacion sensible
   @Exclude()
   @Column()
   password?: string;
