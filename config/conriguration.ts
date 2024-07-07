@@ -16,4 +16,10 @@ export default () => ({
   mongoose: {
     uri: process.env.MONGO_DB_URI,
   },
+  admin: {
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+    firstName: process.env.ADMIN_FIRST_NAME,
+    lastName: process.env.ADMIN_LAST_NAME,
+  },
 });

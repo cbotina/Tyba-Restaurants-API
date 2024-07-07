@@ -1,0 +1,45 @@
+services:
+  tyba_restaurants_api:
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - DB_HOST=postgres_db
+      - MONGO_DB_URI=mongodb://mongo_db:27017/logs
+    env_file:
+      - .env.development.local
+    volumes:
+      - ./src:/usr/src/app/src
+    depends_on:
+      - postgres_db
+      - mongo_db
+
+  postgres_db:
+    image: postgres:latest
+    ports:
+      - '5433:5432'
+    env_file:
+      - .env.development.local
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_HOST: ${DB_HOST}
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+  mongo_db:
+    image: mongo:latest
+    ports:
+      - '27018:27017'
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DB_URI}
+    env_file:
+      - .env.development.local
+    volumes:
+      - mongo_db:/data/db
+
+volumes:
+  mongo_db: {}

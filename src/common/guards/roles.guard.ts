@@ -34,10 +34,10 @@ export class RolesGuard implements CanActivate {
       return false;
     }
 
-    if (user.role === Roles.ADMIN) {
+    if (user.role == Roles.ADMIN) {
       return true;
     }
 
-    return requiredRole === user.role;
+    return requiredRole == user.role;
   }
 }

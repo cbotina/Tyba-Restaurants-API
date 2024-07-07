@@ -5,8 +5,6 @@ import {
   IsEmail,
   IsStrongPasswordOptions,
   IsStrongPassword,
-  IsNumber,
-  IsOptional,
 } from 'class-validator';
 
 const passwordOptions: IsStrongPasswordOptions = {
@@ -37,8 +35,4 @@ export class RegisterDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
-  @IsNumber()
-  @IsOptional()
-  balance?: number;
 }

@@ -16,7 +16,7 @@ export class RestaurantsInterceptor implements NestInterceptor {
   ): Observable<IRestaurant[]> {
     return next.handle().pipe(
       map((result: any) => {
-        if (result.IsNotEmpty) {
+        if (result.places) {
           return result.places.map(
             (doc: any): IRestaurant => ({
               id: doc.id,
