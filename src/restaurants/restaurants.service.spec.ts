@@ -2,12 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { RestaurantsService } from './restaurants.service';
-import { SearchOptionsDto } from './search-options.dto';
+import { SearchOptionsDto } from './dto/search-options.dto';
 import { of, throwError } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { googlePlacesConfig } from '../../config/google-places-api/google-places-api.config';
 
-// Mock the googlePlacesConfig function
+// Mockear la configuracion de googlePlaces
 jest.mock('../../config/google-places-api/google-places-api.config', () => ({
   googlePlacesConfig: jest.fn(),
 }));
@@ -21,12 +21,14 @@ describe('RestaurantsService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         RestaurantsService,
+        // Mock de HttpService
         {
           provide: HttpService,
           useValue: {
             post: jest.fn(),
           },
         },
+        // Mock de configService
         {
           provide: ConfigService,
           useValue: {
@@ -40,7 +42,7 @@ describe('RestaurantsService', () => {
     httpService = module.get<HttpService>(HttpService);
     configService = module.get<ConfigService>(ConfigService);
 
-    // Mock the googlePlacesConfig function
+    // Mock de configuraciones de googlePlaces
     (googlePlacesConfig as jest.Mock).mockReturnValue({
       apiKey: 'mock-api-key',
       apiUrl: 'https://mock-url.com',
@@ -70,6 +72,7 @@ describe('RestaurantsService', () => {
         ],
       };
 
+      // Simular response de Google Places API
       jest.spyOn(httpService, 'post').mockReturnValue(
         of({
           data: mockResponse,
@@ -80,6 +83,8 @@ describe('RestaurantsService', () => {
         } as AxiosResponse),
       );
 
+      // Verifico que se ha realizado una peticion de tipo POST
+      // con el body indicdo y los headers correspondientes
       service.getNearByRestaurants(searchOptionsDto).subscribe({
         next: (result) => {
           expect(result).toEqual(mockResponse);
@@ -125,6 +130,7 @@ describe('RestaurantsService', () => {
 
       const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
 
+      // Simulo un error al realizar la peticion
       service.getNearByRestaurants(searchOptionsDto).subscribe({
         next: () => done.fail('Should have thrown an error'),
         error: (error) => {

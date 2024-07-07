@@ -7,6 +7,7 @@ import {
 import { AxiosError } from 'axios';
 import { Response } from 'express';
 
+// Filtro para manejar excepciones Axios
 @Catch(AxiosError)
 export class AxiosExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {

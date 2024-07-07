@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RestaurantsController } from './restaurants.controller';
 import { RestaurantsService } from './restaurants.service';
 import { HistoryService } from '../../src/history/history.service';
-import { SearchOptionsDto } from './search-options.dto';
+import { SearchOptionsDto } from './dto/search-options.dto';
 import { of } from 'rxjs';
 import { IRestaurant } from './interfaces/restaurant.interface';
 import { firstValueFrom } from 'rxjs';
@@ -21,18 +21,22 @@ describe('RestaurantsController', () => {
       controllers: [RestaurantsController],
       providers: [
         {
+          // Mock de RestaurantsService
           provide: RestaurantsService,
           useValue: {
             getNearByRestaurants: jest.fn(),
           },
         },
         {
+          // Mock de HistoryService
           provide: HistoryService,
           useValue: {
             createLog: jest.fn().mockResolvedValue(undefined),
           },
         },
+        // Importo al interceptor de Restaurants
         RestaurantsInterceptor,
+        // Importo al interceptor de historial, inyectando sus dependendias (HistoryService)
         {
           provide: HistoryLogInterceptor,
           useFactory: (historyService: HistoryService) =>
@@ -65,6 +69,8 @@ describe('RestaurantsController', () => {
         radius: 100,
       };
 
+      // Simulacion de respuesta de Google Places API
+      // Nótese que la estructura y nombres de propiedades es distinta
       const mockRestaurants = {
         places: [
           {
@@ -76,6 +82,8 @@ describe('RestaurantsController', () => {
         ],
       };
 
+      // Respuesta esperada una vez aplicado el interceptor
+      // de restaurante
       const expectedResult: IRestaurant[] = [
         {
           id: '1',
@@ -89,7 +97,7 @@ describe('RestaurantsController', () => {
         .spyOn(restaurantsService, 'getNearByRestaurants')
         .mockReturnValue(of(mockRestaurants));
 
-      // Mock the execution context
+      // Mock de ExcecutionContext
       const mockExecutionContext = {
         switchToHttp: () => ({
           getRequest: () => ({
@@ -102,7 +110,7 @@ describe('RestaurantsController', () => {
         }),
       } as any;
 
-      // Apply interceptors manually
+      // Aplicar interceptor de historial manualmente
       const historyInterceptorHandler = await historyLogInterceptor.intercept(
         mockExecutionContext,
         {
@@ -110,6 +118,7 @@ describe('RestaurantsController', () => {
         },
       );
 
+      // Aplicar interceptor de restaurahtes manualmente
       const restaurantsInterceptorHandler =
         await restaurantsInterceptor.intercept(mockExecutionContext, {
           handle: () => historyInterceptorHandler,
@@ -117,10 +126,15 @@ describe('RestaurantsController', () => {
 
       const result = await firstValueFrom(restaurantsInterceptorHandler);
 
+      // Verificar que el interceptor de restaurantes se aplico correctamente
       expect(result).toEqual(expectedResult);
+
+      // Verificar que el metodo del servicio sea llamado
       expect(restaurantsService.getNearByRestaurants).toHaveBeenCalledWith(
         searchOptionsDto,
       );
+
+      // Verificar que el metodo de creacion de historial sea llamado
       expect(historyService.createLog).toHaveBeenCalled();
     });
   });

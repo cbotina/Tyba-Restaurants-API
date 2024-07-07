@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { googlePlacesConfig } from '../../config/google-places-api/google-places-api.config';
 import { catchError, map } from 'rxjs';
-import { SearchOptionsDto } from './search-options.dto';
+import { SearchOptionsDto } from './dto/search-options.dto';
 
 @Injectable()
 export class RestaurantsService {
@@ -12,12 +12,21 @@ export class RestaurantsService {
     private readonly configService: ConfigService,
   ) {}
 
+  /**
+   * Metodo que retorna una lista de restaurantes cercanos segun
+   * opciones de busqueda.
+   * @param searchOptionsDto Opciones de busqueda (coordenadas y radio)
+   * @returns Response de Google Places API. Posteriormente se mapea dicha
+   * respuesta en el interceptor  RestaurantsInterceptor
+   */
   getNearByRestaurants(searchOptionsDto: SearchOptionsDto) {
     const { apiKey, apiUrl } = googlePlacesConfig(this.configService);
     const { maxResultCount, coordinates, radius } = searchOptionsDto;
 
     const url = `${apiUrl}:searchNearby`;
 
+    // Headers requeridos pos la API.
+    // FieldMask define los datos que se consultaran de cada restaurante
     const headers = {
       'X-Goog-Api-Key': apiKey,
       'X-Goog-FieldMask':

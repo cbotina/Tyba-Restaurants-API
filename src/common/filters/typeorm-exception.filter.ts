@@ -7,6 +7,7 @@ import {
 import { Response } from 'express';
 import { EntityNotFoundError, QueryFailedError, TypeORMError } from 'typeorm';
 
+// Filtro para manejar excepciones TypeORM
 @Catch(TypeORMError)
 export class TypeORMExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {

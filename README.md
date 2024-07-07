@@ -1,8 +1,6 @@
 # Tyba Restaurants API
 
-Este repositorio contiene una API REST desarrollada para la prueba técnica de ingreso al equipo de backend de Tyba. La API proporciona funcionalidades de registro de usuarios e inicio de sesión.
-
-Para usuarios autenticados, se permite consultar los restaurantes cercanos a una ubicación en específico (Definida por coordenadas y un radio de búsqueda), historial de transacciones realizadas (En este contexto se consideró 'transacciones' a las peticiones históricas realizadas al endpoint de restaurantes) y gestión de usuarios.
+Este repositorio contiene una API REST desarrollada para la prueba técnica de ingreso al equipo de backend de Tyba. La API proporciona funcionalidades de registro de usuarios e inicio de sesión. Para usuarios autenticados, se permite consultar los restaurantes cercanos a una ubicación en específico (Definida por coordenadas y un radio de búsqueda), historial de transacciones realizadas (En este contexto se consideró 'transacciones' a las peticiones históricas realizadas al endpoint de restaurantes) y gestión de usuarios.
 
 Se manejó un RBAC (Control de acceso basado en Roles) para la autorización en los endpoints a lo largo de la aplicación. El rol de cada usuario puede ser `customer` o `admin`. Al ejecutar el proyecto, se crea automáticamente un usuario `admin` por defecto, cuyas credenciales se especifican en el archivo `.env` proporcionado.
 
@@ -20,7 +18,7 @@ En ese contexto, se implementaron las siguientes reglas
 
 - NodeJS
 - NestJS
-- Base de Datos: PostgreSQL, MongoDB
+- Base de Datos: PostgreSQL (Almacenamiento de usuarios), MongoDB (Almacenamiento de transacciones)
 - Autenticación: Json Web Token (JWT)
 - Docker y docker-compose para entorno de desarrollo
 

@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
 import { Document } from 'mongoose';
 
+// Schema que guarda la informacion en la base de datos de historial
 export type LogDocument = Log & Document;
 
 @Schema()
@@ -22,6 +23,9 @@ export class Log {
   @Prop()
   origin: string;
 
+  // El body puede tomar cualquier valor
+  // aprovechando las caracteristicas
+  // de NoSQL
   @Prop({ type: Object })
   body?: Record<string, any>;
 

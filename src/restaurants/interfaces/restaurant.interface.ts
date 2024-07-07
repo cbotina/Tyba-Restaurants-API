@@ -1,8 +1,8 @@
-import { Coordinates } from '../search-options.dto';
+import { Coordinates } from '../dto/search-options.dto';
 
 export interface IRestaurant {
-  id: string;
-  name: string;
-  address: string;
-  location: Coordinates;
+  id?: string;
+  name?: string;
+  address?: string;
+  location?: Coordinates;
 }

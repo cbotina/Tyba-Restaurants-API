@@ -11,6 +11,9 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get('PORT');
 
+  // * CONFIGURACIONES GLOBALES
+
+  // Pipe para validacion de body
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -19,8 +22,11 @@ async function bootstrap() {
     }),
   );
 
+  // Filtros para manejar exceptiones de typeorm o axios
   app.useGlobalFilters(new TypeORMExceptionFilter());
   app.useGlobalFilters(new AxiosExceptionFilter());
+
+  // Guard global para verificar el rol del usuario
   app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
 
   await app.listen(port);
