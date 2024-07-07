@@ -28,8 +28,6 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_HOST: ${DB_HOST}
-    volumes:
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
   mongo_db:
     image: mongo:latest
     ports:
